@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POP BREW CAFE | คาเฟ่และเบเกอรี่สไตล์ป๊อปสุดชิค</title>
+  
+  <!-- ฟอนต์ Kanit & Prompt สไตล์โมเดิร์นป๊อปอาร์ต -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@600;700;800&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       CSS STYLING (สไตล์ Neo-Pop Art: เส้นขอบหนา เงาคม สีสันสดใส ชิคๆ คูลๆ)
+       - Flexbox: Navbar, Footer, Tag Groups, Button Rows
+       - CSS Grid: Hero Banner, Products Catalog, Features, Combos, Contact Form
+       - Responsive: รองรับมือถือเต็มรูปแบบ (@media และ Hamburger Menu)
+       ========================================================================== */
+    :root {
+      --bg: #fff8f0;             /* พื้นหลังสีครีมอุ่น */
+      --dark: #1e1e24;           /* สีดำชาร์โคล เส้นขอบคมชัด */
+      --primary: #ff4757;        /* สีแดงป๊อปสดใส */
+      --secondary: #2ed573;      /* สีเขียวนีออนสดชื่น */
+      --accent: #ffa502;         /* สีส้มเหลืองป๊อปอาร์ต */
+      --blue: #70a1ff;           /* สีฟ้าสดใส */
+      --surface: #ffffff;
+      --text-muted: #57606f;
+      --border: 3px solid #1e1e24;
+      --border-sm: 2px solid #1e1e24;
+      --shadow: 5px 5px 0px #1e1e24;
+      --shadow-sm: 3px 3px 0px #1e1e24;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Prompt', sans-serif; }
+    h1, h2, h3, h4, .logo, .badge, .btn-pop { font-family: 'Kanit', sans-serif; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--dark);
+      line-height: 1.6;
+      background-image: radial-gradient(#ffd5bd 1.5px, transparent 1.5px);
+      background-size: 22px 22px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; cursor: pointer; }
+    .container { width: 92%; max-width: 1100px; margin: 0 auto; }
+    
+    /* Navigation Bar (Flexbox) */
+    .header {
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      border-bottom: var(--border);
+      z-index: 1000;
+      padding: 0.8rem 0;
+    }
+    .navbar { display: flex; justify-content: space-between; align-items: center; }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .logo span {
+      background: var(--primary);
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 8px;
+      border: var(--border-sm);
+      box-shadow: 2px 2px 0px var(--dark);
+    }
+    .nav-links { display: flex; gap: 8px; align-items: center; list-style: none; }
+    .nav-link {
+      padding: 6px 14px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .nav-link:hover, .nav-link.active {
+      background: var(--accent);
+      border: var(--border-sm);
+      box-shadow: var(--shadow-sm);
+      transform: translate(-2px, -2px);
+    }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .cart-badge {
+      background: var(--secondary);
+      border: var(--border-sm);
+      box-shadow: var(--shadow-sm);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
+    .hamburger {
+      display: none;
+      background: #fff;
+      border: var(--border-sm);
+      box-shadow: var(--shadow-sm);
+      padding: 6px 9px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 3px;
+      background: var(--dark);
+      margin: 4px 0;
+      border-radius: 2px;
+      transition: 0.2s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Single Page View Switcher (5 หน้าใน 1 ไฟล์) */
+    .page-view { display: none; animation: popIn 0.25s ease-out; padding: 2.5rem 0; }
+    .page-view.active { display: block; }
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* UI Components (Neo-Pop Art) */
+    .btn-pop {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius);
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .btn-pop:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--dark); }
+    .btn-pop:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0px var(--dark); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-secondary { background: var(--secondary); color: var(--dark); }
+    .btn-accent { background: var(--accent); color: var(--dark); }
+    .btn-white { background: #fff; color: var(--dark); }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border: var(--border-sm);
+      box-shadow: 2px 2px 0px var(--dark);
+      margin-bottom: 8px;
+    }
+    .badge-yellow { background: var(--accent); }
+    .badge-green { background: var(--secondary); }
+    .badge-blue { background: var(--blue); }
+
+    .card-pop {
+      background: #fff;
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 22px;
+      transition: 0.2s;
+    }
+    .card-pop:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    
+    .section-head { text-align: center; margin-bottom: 2rem; }
+    .section-head h2 { font-size: 2.2rem; }
+    .section-head p { color: var(--text-muted); }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+
+    /* Hero Banner (CSS Grid) */
+    .hero-card {
+      background: #fff;
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 35px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 25px;
+      margin-bottom: 2.5rem;
+    }
+    .hero-title { font-size: 2.6rem; line-height: 1.2; margin: 10px 0; }
+    .hero-img {
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      height: 300px;
+    }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Products Catalog (CSS Grid & Filter) */
+    .filter-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 2rem; flex-wrap: wrap; }
+    .filter-btn {
+      background: #fff;
+      border: var(--border-sm);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px var(--dark);
+      transition: 0.15s;
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--accent); transform: translate(-1px, -1px); }
+
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; }
+    .product-card {
+      background: #fff;
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      transition: 0.2s;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .product-img {
+      height: 165px;
+      border-radius: var(--radius-sm);
+      border: var(--border-sm);
+      overflow: hidden;
+      margin-bottom: 12px;
+      background: #f1f2f6;
+    }
+    .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+    .product-card:hover .product-img img { transform: scale(1.06); }
+    .product-cat { font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; }
+    .product-name { font-size: 1.15rem; font-weight: 800; margin: 3px 0 5px; }
+    .product-desc { font-size: 0.85rem; color: var(--text-muted); flex-grow: 1; margin-bottom: 12px; }
+    .product-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 2px dashed #ddd;
+      padding-top: 10px;
+    }
+    .price { font-size: 1.25rem; font-weight: 800; color: var(--primary); }
+
+    /* Countdown Timer */
+    .timer-wrap { display: flex; gap: 10px; margin: 15px 0; }
+    .time-box {
+      background: #fff;
+      border: var(--border-sm);
+      box-shadow: var(--shadow-sm);
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 65px;
+    }
+    .time-num { font-size: 1.5rem; font-weight: 800; color: var(--primary); display: block; }
+    .time-txt { font-size: 0.7rem; font-weight: 700; }
+
+    /* Contact Form (Requirement #8) */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 25px; align-items: start; }
+    .form-group { margin-bottom: 14px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+    .form-control {
+      width: 100%;
+      padding: 9px 12px;
+      border: var(--border-sm);
+      border-radius: var(--radius-sm);
+      outline: none;
+      background: #fafafa;
+      font-size: 0.95rem;
+    }
+    .form-control:focus { background: #fff; border-color: var(--primary); box-shadow: 2px 2px 0 var(--dark); }
+    .form-control.error { border-color: var(--primary); background: #fff2f2; }
+    .error-text { color: var(--primary); font-size: 0.78rem; font-weight: 600; margin-top: 3px; display: none; }
+    .error-text.show { display: block; }
+
+    /* Modals */
+    .modal-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(30, 30, 36, 0.7);
+      backdrop-filter: blur(2px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      padding: 1rem;
+    }
+    .modal-bg.active { display: flex; }
+    .modal-box {
+      background: #fff;
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: 8px 8px 0px var(--dark);
+      width: 100%;
+      max-width: 460px;
+      padding: 24px;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px; right: 12px;
+      background: #fff;
+      border: var(--border-sm);
+      border-radius: 8px;
+      width: 32px; height: 32px;
+      cursor: pointer;
+      font-weight: 800;
+      box-shadow: 2px 2px 0 var(--dark);
+    }
+
+    /* Footer */
+    .footer { background: #fff; border-top: var(--border); margin-top: auto; padding: 2rem 0; text-align: center; }
+    .footer-links { display: flex; justify-content: center; gap: 15px; margin-bottom: 8px; flex-wrap: wrap; }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .hamburger { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        background: #fff;
+        border-bottom: var(--border);
+        flex-direction: column;
+        padding: 1rem;
+        gap: 8px;
+        box-shadow: var(--shadow);
+      }
+      .nav-links.open { display: flex; }
+      .hero-card, .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero-title { font-size: 2.1rem; }
+      .hero-img { height: 220px; }
+    }
+  
+    /* Cart */
+    .cart-badge { cursor: pointer; font-family: inherit; color: var(--dark); }
+    .cart-badge:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--dark); }
+    .cart-badge.bump { animation: bump .3s; }
+    @keyframes bump { 50% { transform: scale(1.18); } }
+    .cart-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 400px;
+      background: #fff; border-left: var(--border); box-shadow: -8px 0 0 var(--dark);
+      z-index: 2100; display: flex; flex-direction: column;
+      transform: translateX(110%); transition: transform .25s ease;
+    }
+    .cart-drawer.open { transform: translateX(0); }
+    .cart-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; background: var(--accent); border-bottom: var(--border); font-weight: 800; font-size: 1.15rem; }
+    .cart-items { flex: 1; overflow-y: auto; padding: 14px 18px; }
+    .cart-empty { text-align: center; color: var(--text-muted); padding: 40px 10px; }
+    .cart-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 2px dashed #ddd; }
+    .cart-row .ci-info { flex: 1; min-width: 0; }
+    .cart-row .ci-name { font-weight: 700; font-size: .95rem; }
+    .cart-row .ci-price { color: var(--text-muted); font-size: .82rem; }
+    .qty { display: flex; align-items: center; gap: 6px; }
+    .qty button, .ci-del { width: 28px; height: 28px; border: var(--border-sm); border-radius: 8px; background: #fff; box-shadow: 2px 2px 0 var(--dark); font-weight: 800; cursor: pointer; font-family: inherit; }
+    .qty button:active, .ci-del:active { transform: translate(2px,2px); box-shadow: none; }
+    .qty span { min-width: 20px; text-align: center; font-weight: 800; }
+    .ci-sum { min-width: 58px; text-align: right; font-weight: 800; }
+    .cart-foot { padding: 16px 18px; border-top: var(--border); background: var(--bg); }
+    .cart-total { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2rem; margin-bottom: 12px; }
+    .cart-overlay { position: fixed; inset: 0; background: rgba(30,30,36,.6); z-index: 2050; display: none; }
+    .cart-overlay.show { display: block; }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 30px); background: var(--dark); color: #fff; padding: 10px 18px; border-radius: 999px; font-weight: 700; z-index: 3000; opacity: 0; pointer-events: none; transition: all .25s; max-width: 90%; text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       HEADER & NAVIGATION BAR (Flexbox)
+       ======================================================================== -->
+  <header class="header">
+    <div class="container navbar">
+      <div class="logo" onclick="showPage('home')">
+        ☕ POP BREW <span>CAFE</span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a class="nav-link active" onclick="showPage('home')">หน้าแรก</a></li>
+        <li><a class="nav-link" onclick="showPage('products')">เมนูและสินค้า</a></li>
+        <li><a class="nav-link" onclick="showPage('promotions')">โปรโมชั่น</a></li>
+        <li><a class="nav-link" onclick="showPage('about')">เกี่ยวกับเรา</a></li>
+        <li><a class="nav-link" onclick="showPage('contact')">ติดต่อร้าน</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button type="button" class="cart-badge" id="cartBtn" onclick="openCart()" aria-label="เปิดตะกร้า">🛒 ตะกร้า: <span id="cartCount">0</span></button>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========================================================================
+         PAGE 1: หน้าแรก (Home)
+         ======================================================================== -->
+    <section class="page-view active" id="page-home">
+      <div class="container">
+        <!-- Hero Section (CSS Grid) -->
+        <div class="hero-card">
+          <div>
+            <span class="badge badge-yellow">⚡ Specialty Coffee & Homemade Bakery</span>
+            <h1 class="hero-title">กาแฟสดรสเข้มข้น ในบรรยากาศสุดชิค</h1>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">
+              คาเฟ่สไตล์ป๊อปอาร์ตที่คัดสรรเมล็ดกาแฟอาราบิก้าชั้นเลิศ คั่วบดสดใหม่แก้วต่อแก้ว พร้อมเสิร์ฟเบเกอรี่เนยสดหอมกรุ่น ในพื้นที่นั่งทำงานและพักผ่อนสุดชิลล์
+            </p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn-pop btn-primary" onclick="showPage('products')">☕ ดูเมนูเครื่องดื่ม</button>
+              <button class="btn-pop btn-white" onclick="showPage('promotions')">🎁 โปรโมชั่นสุดคุ้ม</button>
+            </div>
+          </div>
+          <div class="hero-img">
+            <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=700&auto=format&fit=crop&q=80" alt="Cozy Pop Cafe Atmosphere">
+          </div>
+        </div>
+
+        <!-- Features (CSS Grid 3 Columns) -->
+        <div class="section-head">
+          <span class="badge badge-green">✨ เอกลักษณ์ของเรา</span>
+          <h2>3 เหตุผลที่คุณจะหลงรักร้านเรา</h2>
+        </div>
+        <div class="grid-3" style="margin-bottom: 3rem;">
+          <div class="card-pop" style="text-align: center;">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">☕</div>
+            <h3>เมล็ดกาแฟ Specialty 100%</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">คัดสรรเมล็ดอาราบิก้าคุณภาพสูง คั่วสดใหม่ ให้มิติรสชาติช็อกโกแลตและคาราเมล</p>
+          </div>
+          <div class="card-pop" style="text-align: center;">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">🥐</div>
+            <h3>เบเกอรี่อบสดใหม่ทุกเช้า</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">ใช้เนยสดแท้นำเข้าจากฝรั่งเศส ปราศจากไขมันทรานส์ หอมกรุ่น นุ่มละมุนลิ้น</p>
+          </div>
+          <div class="card-pop" style="text-align: center;">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">💻</div>
+            <h3>Co-Working Space & Free Wi-Fi</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">โต๊ะทำงานกว้างขวาง มีปลั๊กไฟบริการทุกจุด พร้อมเน็ตความเร็วสูง นั่งได้ทั้งวัน</p>
+          </div>
+        </div>
+
+        <!-- Popular Menu Highlights -->
+        <div class="section-head">
+          <span class="badge badge-blue">🔥 เมนูยอดนิยม</span>
+          <h2>เมนูแนะนำประจำร้าน</h2>
+        </div>
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?w=500&auto=format&fit=crop&q=80" alt="Caramel Latte">
+            </div>
+            <div class="product-cat">กาแฟซิกเนเจอร์</div>
+            <div class="product-name">Signature Vanilla Latte</div>
+            <div class="product-desc">ลาเต้นมสดวานิลลาแท้ หอมกรุ่น นุ่มละมุนลิ้น ฟองนมนุ่มละเอียด</div>
+            <div class="product-foot">
+              <span class="price">85 ฿</span>
+              <button class="btn-pop btn-primary" onclick="addCart('Signature Vanilla Latte')">+ สั่งเลย</button>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=500&auto=format&fit=crop&q=80" alt="Cold Brew">
+            </div>
+            <div class="product-cat">กาแฟเข้มข้น</div>
+            <div class="product-name">Craft Cold Brew</div>
+            <div class="product-desc">กาแฟสกัดเย็น 18 ชั่วโมง เข้มข้น นุ่มลึก สดชื่น ตื่นเต็มตาตลอดวัน</div>
+            <div class="product-foot">
+              <span class="price">95 ฿</span>
+              <button class="btn-pop btn-primary" onclick="addCart('Craft Cold Brew')">+ สั่งเลย</button>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=500&auto=format&fit=crop&q=80" alt="Kyoto Matcha">
+            </div>
+            <div class="product-cat">ชาเขียวแท้</div>
+            <div class="product-name">Kyoto Uji Matcha</div>
+            <div class="product-desc">มัทฉะเกรดพรีเมียมจากเมืองอูจิ ชงสดแก้วต่อแก้ว หวานน้อยเข้มข้น</div>
+            <div class="product-foot">
+              <span class="price">90 ฿</span>
+              <button class="btn-pop btn-primary" onclick="addCart('Kyoto Uji Matcha')">+ สั่งเลย</button>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&auto=format&fit=crop&q=80" alt="French Croissant">
+            </div>
+            <div class="product-cat">เบเกอรี่</div>
+            <div class="product-name">French Butter Croissant</div>
+            <div class="product-desc">ครัวซองต์เนยสดฝรั่งเศส อบใหม่ทุกเช้า ผิวนอกกรอบ เนื้อในนุ่มฟู</div>
+            <div class="product-foot">
+              <span class="price">65 ฿</span>
+              <button class="btn-pop btn-primary" onclick="addCart('French Butter Croissant')">+ สั่งเลย</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         PAGE 2: เมนูและสินค้า (Products & Filter)
+         ======================================================================== -->
+    <section class="page-view" id="page-products">
+      <div class="container">
+        <div class="section-head">
+          <span class="badge badge-yellow">☕ เมนูทั้งหมด</span>
+          <h2>แคตตาล็อกเครื่องดื่ม & เบเกอรี่</h2>
+          <p>เลือกหมวดหมู่ที่ชอบ หรือคลิกปุ่ม Quick View 👁️ เพื่อดูส่วนผสมและรายละเอียด</p>
+        </div>
+
+        <!-- Filter Tabs (JS Filtering) -->
+        <div class="filter-tabs">
+          <button class="filter-btn active" onclick="filterItems('all')">✨ ทั้งหมด (All)</button>
+          <button class="filter-btn" onclick="filterItems('coffee')">☕ กาแฟสด (Coffee)</button>
+          <button class="filter-btn" onclick="filterItems('non-coffee')">🍵 ชาและเครื่องดื่มสดชื่น</button>
+          <button class="filter-btn" onclick="filterItems('bakery')">🥐 ขนมและเบเกอรี่</button>
+        </div>
+
+        <!-- Products Grid (Requirement #5 & #7) -->
+        <div class="products-grid">
+          <!-- Item 1 -->
+          <div class="product-card" data-cat="coffee">
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?w=500&auto=format&fit=crop&q=80" alt="Signature Vanilla Latte">
+            </div>
+            <div class="product-cat">กาแฟ</div>
+            <div class="product-name">Signature Vanilla Latte</div>
+            <div class="product-desc">ลาเต้นมสดวานิลลาแท้ กลิ่นหอมละมุน ฟองนมนุ่ม รสชาติกลมกล่อม</div>
+            <div class="product-foot">
+              <span class="price">85 ฿</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-pop btn-white btn-qv" data-title="Signature Vanilla Latte" data-cat="กาแฟสด" data-desc="เมล็ดอาราบิก้าคั่วกลาง ผสานนมสดพาสเจอร์ไรส์และวานิลลาแท้ รสชาติหวานมันกำลังดี" data-price="85 ฿" data-img="https://images.unsplash.com/photo-1541167760496-1628856ab772?w=500&auto=format&fit=crop&q=80">👁️</button>
+                <button class="btn-pop btn-primary" onclick="addCart('Signature Vanilla Latte')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="product-card" data-cat="coffee">
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=500&auto=format&fit=crop&q=80" alt="Craft Cold Brew">
+            </div>
+            <div class="product-cat">กาแฟ</div>
+            <div class="product-name">Craft Cold Brew</div>
+            <div class="product-desc">กาแฟสกัดเย็น 18 ชม. รสชาติเข้มข้นสดชื่น ปราศจากความเปรี้ยวโดด</div>
+            <div class="product-foot">
+              <span class="price">95 ฿</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-pop btn-white btn-qv" data-title="Craft Cold Brew" data-cat="กาแฟสด" data-desc="กาแฟดำสกัดเย็นอุณหภูมิต่ำนาน 18 ชม. ดึงกลิ่นหอมช็อกโกแลตและคาราเมลธรรมชาติ" data-price="95 ฿" data-img="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=500&auto=format&fit=crop&q=80">👁️</button>
+                <button class="btn-pop btn-primary" onclick="addCart('Craft Cold Brew')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="product-card" data-cat="non-coffee">
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=500&auto=format&fit=crop&q=80" alt="Kyoto Uji Matcha">
+            </div>
+            <div class="product-cat">ไม่ใช่กาแฟ</div>
+            <div class="product-name">Kyoto Uji Matcha</div>
+            <div class="product-desc">มัทฉะเกรดพิธีการจากอูจิ ชงสดแก้วต่อแก้ว หอมกลิ่นใบชาคั่วเข้มข้น</div>
+            <div class="product-foot">
+              <span class="price">90 ฿</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-pop btn-white btn-qv" data-title="Kyoto Uji Matcha" data-cat="ชาและเครื่องดื่ม" data-desc="ผงมัทฉะแท้ 100% ส่งตรงจากญี่ปุ่น ชงผสมนมสดหวานน้อย เข้มข้นสะใจสายชาเขียว" data-price="90 ฿" data-img="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=500&auto=format&fit=crop&q=80">👁️</button>
+                <button class="btn-pop btn-primary" onclick="addCart('Kyoto Uji Matcha')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="product-card" data-cat="non-coffee">
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop&q=80" alt="Sparkling Peach Tea">
+            </div>
+            <div class="product-cat">ไม่ใช่กาแฟ</div>
+            <div class="product-name">Sparkling Peach Tea</div>
+            <div class="product-desc">ชาพีชโซดาซาบซ่า หอมกลิ่นพีชแท้ ดื่มแล้วสดชื่นมีชีวิตชีวา คลายร้อน</div>
+            <div class="product-foot">
+              <span class="price">75 ฿</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-pop btn-white btn-qv" data-title="Sparkling Peach Tea" data-cat="ชาและเครื่องดื่ม" data-desc="ชาดำอังกฤษผสมเนื้อพีชหวานหอมและโซดาซ่าสดชื่น เหมาะสำหรับวันที่ต้องการความสดชื่น" data-price="75 ฿" data-img="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop&q=80">👁️</button>
+                <button class="btn-pop btn-primary" onclick="addCart('Sparkling Peach Tea')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 5 -->
+          <div class="product-card" data-cat="bakery">
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=80" alt="Basque Cheesecake">
+            </div>
+            <div class="product-cat">เบเกอรี่</div>
+            <div class="product-name">Basque Burnt Cheesecake</div>
+            <div class="product-desc">ชีสเค้กหน้าไหม้สไตล์สเปน เนื้อเนียนนุ่มละลายในปาก หอมกลิ่นคาราเมล</div>
+            <div class="product-foot">
+              <span class="price">110 ฿</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-pop btn-white btn-qv" data-title="Basque Burnt Cheesecake" data-cat="เบเกอรี่" data-desc="ครีมชีสแท้นำเข้า อบด้วยไฟแรงจนหน้าไหม้หอมคาราเมล เนื้อในครีมมี่เนียนนุ่มฟินสุดๆ" data-price="110 ฿" data-img="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=80">👁️</button>
+                <button class="btn-pop btn-primary" onclick="addCart('Basque Burnt Cheesecake')">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 6 -->
+          <div class="product-card" data-cat="bakery">
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&auto=format&fit=crop&q=80" alt="French Butter Croissant">
+            </div>
+            <div class="product-cat">เบเกอรี่</div>
+            <div class="product-name">French Butter Croissant</div>
+            <div class="product-desc">ครัวซองต์เนยสดฝรั่งเศส อบใหม่ทุกวัน ผิวนอกกรอบเป็นชั้น เนื้อในนุ่มฟู</div>
+            <div class="product-foot">
+              <span class="price">65 ฿</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-pop btn-white btn-qv" data-title="French Butter Croissant" data-cat="เบเกอรี่" data-desc="ครัวซองต์เนยสดแท้ 100% นำเข้าจากฝรั่งเศส รีดแป้งหลายชั้น อบสดใหม่ ส่งกลิ่นหอมกรุ่นทุกวัน" data-price="65 ฿" data-img="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&auto=format&fit=crop&q=80">👁️</button>
+                <button class="btn-pop btn-primary" onclick="addCart('French Butter Croissant')">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         PAGE 3: โปรโมชั่น (Promotions & Countdown)
+         ======================================================================== -->
+    <section class="page-view" id="page-promotions">
+      <div class="container">
+        <div class="section-head">
+          <span class="badge badge-green">🎁 สิทธิพิเศษ & ดีลลับ</span>
+          <h2>โปรโมชั่นสุดคุ้มประจำสัปดาห์</h2>
+          <p>รีบจับจองก่อนเวลาโปรโมชั่นพิเศษจะหมดลง!</p>
+        </div>
+
+        <!-- Countdown Banner (JS Live Timer) -->
+        <div class="card-pop" style="margin-bottom: 2rem;">
+          <span class="badge badge-yellow">⏰ Flash Sale นับถอยหลัง</span>
+          <h2 style="margin: 8px 0;">Specialty Coffee Week - ลดทันที 20%</h2>
+          <p style="color: var(--text-muted);">เพียงแจ้งรหัสโค้ด <strong>#POP2026</strong> ที่หน้าร้านหรือระบุในฟอร์มจองโต๊ะ</p>
+          <div class="timer-wrap">
+            <div class="time-box"><span class="time-num" id="dBox">00</span><span class="time-txt">วัน</span></div>
+            <div class="time-box"><span class="time-num" id="hBox">00</span><span class="time-txt">ชั่วโมง</span></div>
+            <div class="time-box"><span class="time-num" id="mBox">00</span><span class="time-txt">นาที</span></div>
+            <div class="time-box"><span class="time-num" id="sBox">00</span><span class="time-txt">วินาที</span></div>
+          </div>
+        </div>
+
+        <!-- Combo Sets (CSS Grid) -->
+        <div class="grid-3">
+          <div class="card-pop">
+            <span class="badge badge-yellow">SET 01</span>
+            <h3 style="margin: 8px 0;">Morning Starter Set</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">Signature Vanilla Latte + ครัวซองต์เนยสดฝรั่งเศส อบอุ่นยามเช้า</p>
+            <div style="margin: 15px 0; font-size: 1.3rem; font-weight: 800; color: var(--primary);">
+              <span style="text-decoration: line-through; color: #999; font-size: 1rem; margin-right: 8px;">150 ฿</span> 120 ฿
+            </div>
+            <button class="btn-pop btn-primary" style="width:100%;" onclick="addCart('Morning Starter Set')">สั่งเซ็ตนี้</button>
+          </div>
+
+          <div class="card-pop">
+            <span class="badge badge-green">SET 02 (ยอดฮิต)</span>
+            <h3 style="margin: 8px 0;">Afternoon Sweet Set</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">Kyoto Uji Matcha + ชีสเค้กหน้าไหม้ Basque Burnt Cheesecake</p>
+            <div style="margin: 15px 0; font-size: 1.3rem; font-weight: 800; color: var(--primary);">
+              <span style="text-decoration: line-through; color: #999; font-size: 1rem; margin-right: 8px;">200 ฿</span> 165 ฿
+            </div>
+            <button class="btn-pop btn-primary" style="width:100%;" onclick="addCart('Afternoon Sweet Set')">สั่งเซ็ตนี้</button>
+          </div>
+
+          <div class="card-pop">
+            <span class="badge badge-blue">SET 03</span>
+            <h3 style="margin: 8px 0;">Work & Share Duo</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">Craft Cold Brew 2 แก้ว + ขนมอบ 2 ชิ้น เหมาะสำหรับนั่งทำงานคู่กัน</p>
+            <div style="margin: 15px 0; font-size: 1.3rem; font-weight: 800; color: var(--primary);">
+              <span style="text-decoration: line-through; color: #999; font-size: 1rem; margin-right: 8px;">320 ฿</span> 260 ฿
+            </div>
+            <button class="btn-pop btn-primary" style="width:100%;" onclick="addCart('Work & Share Duo')">สั่งเซ็ตนี้</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         PAGE 4: เกี่ยวกับเรา (About Us)
+         ======================================================================== -->
+    <section class="page-view" id="page-about">
+      <div class="container">
+        <div class="section-head">
+          <span class="badge badge-blue">☕ เรื่องราวของพวกเรา</span>
+          <h2>จุดเริ่มต้นจากความหลงใหลในกาแฟ</h2>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-img">
+            <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=700&auto=format&fit=crop&q=80" alt="Coffee Brewing Handcraft">
+          </div>
+          <div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 10px;">คัดสรรสิ่งที่ดีที่สุด ส่งมอบให้คุณ ☕✨</h3>
+            <p style="color: var(--text-muted); margin-bottom: 15px;">
+              POP BREW CAFE ก่อตั้งขึ้นจากกลุ่มเพื่อนที่หลงใหลในศาสตร์ของกาแฟและศิลปะดีไซน์ยุคใหม่ เราอยากสร้างพื้นที่คาเฟ่ที่สดใส มีชีวิตชีวา เป็นกันเอง และเข้าถึงง่ายสำหรับทุกคน
+            </p>
+            <p style="color: var(--text-muted); margin-bottom: 15px;">
+              เราคัดสรรเมล็ดกาแฟคุณภาพเยี่ยมจากเกษตรกรไทย นำมาผ่านกระบวนการคั่วบดอย่างพิถีพิถัน เพื่อให้ทุกแก้วที่คุณดื่มเต็มไปด้วยพลังบวกและแรงบันดาลใจ
+            </p>
+            <button class="btn-pop btn-accent" onclick="showPage('contact')">💬 แวะมาพูดคุยกับเราได้เลย</button>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="card-pop" style="text-align: center;">
+            <h3>🌱 เมล็ดกาแฟออร์แกนิก</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">สนับสนุนเกษตรกรไทย ปลูกบนดอยสูงอย่างยั่งยืน ไร้สารเคมี ปลอดภัยต่อสุขภาพ</p>
+          </div>
+          <div class="card-pop" style="text-align: center;">
+            <h3>🥖 ขนมสดใหม่ไร้สารปรุงแต่ง</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">เบเกอรี่ทุกชิ้นปราศจากวัตถุกันเสีย ใช้เนยแท้และวัตถุดิบชั้นดี อบใหม่ทุกวัน</p>
+          </div>
+          <div class="card-pop" style="text-align: center;">
+            <h3>⚡ ปลั๊ก & ไวไฟฟรี</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">โต๊ะทำงานกว้างขวาง ปลั๊กไฟครบทุกจุด และเน็ตความเร็วสูง นั่งทำงานได้ทั้งวัน</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         PAGE 5: ติดต่อเรา (Contact & Reservation Form - Requirement #8)
+         ======================================================================== -->
+    <section class="page-view" id="page-contact">
+      <div class="container">
+        <div class="section-head">
+          <span class="badge badge-yellow">📍 แวะมาทักทาย</span>
+          <h2>ติดต่อเรา & จองโต๊ะล่วงหน้า</h2>
+          <p>กรอกแบบฟอร์มด้านล่าง เจ้าหน้าที่จะติดต่อกลับยืนยันภายใน 15 นาที</p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="card-pop">
+            <h3 style="margin-bottom: 15px;">📍 ข้อมูลสาขาหลัก</h3>
+            <p style="margin-bottom: 10px;"><strong>ที่อยู่:</strong> 999/9 อ.เมืองขอนแก่น ต.เมืองขอนแก่น  จ.ขอนแก่น 40000</p>
+            <p style="margin-bottom: 10px;"><strong>เบอร์โทร:</strong> 089-111-1111, 02-987-6543</p>
+            <p style="margin-bottom: 10px;"><strong>อีเมล:</strong> contact@popbrewcafe.com</p>
+            <p style="margin-bottom: 15px;"><strong>เวลาเปิด-ปิด:</strong> ทุกวัน 08:00 - 20:00 น.</p>
+            <div style="background: #eef1f6; padding: 12px; border-radius: var(--radius-sm); border: var(--border-sm);">
+              <p style="font-size: 0.85rem; color: var(--text-muted);">
+                🚆 เดินทางสะดวก: ทางออก 4 เดินเข้าซอย 150 เมตร มีที่จอดรถหน้าร้าน 5 คัน
+              </p>
+            </div>
+          </div>
+
+          <!-- Form (Requirement #8 & Validation) -->
+          <div class="card-pop">
+            <h3 style="margin-bottom: 15px;">📝 ส่งข้อความ / จองโต๊ะ</h3>
+            <form id="contactForm" novalidate>
+              <div class="form-group">
+                <label class="form-label">ชื่อ-นามสกุล *</label>
+                <input type="text" id="fullname" class="form-control" placeholder="เช่น กิตติพงษ์ เจริญทรัพย์">
+                <span class="error-text" id="fullnameErr">กรุณากรอกชื่ออย่างน้อย 3 ตัวอักษร</span>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">อีเมล *</label>
+                  <input type="email" id="email" class="form-control" placeholder="yourname@gmail.com">
+                  <span class="error-text" id="emailErr">กรุณากรอกอีเมลให้ถูกต้อง</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">เบอร์โทรศัพท์ *</label>
+                  <input type="tel" id="phone" class="form-control" placeholder="08XXXXXXXX">
+                  <span class="error-text" id="phoneErr">กรุณากรอกเบอร์โทรศัพท์ 9-10 หลัก</span>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">หัวข้อติดต่อ *</label>
+                  <select id="topic" class="form-control">
+                    <option value="จองโต๊ะล่วงหน้า">สำรองที่นั่งล่วงหน้า</option>
+                    <option value="สั่งจัดเลี้ยงหรือเบรกสัมมนา">สั่งชุดเบรกงานสัมมนา</option>
+                    <option value="สอบถามข้อมูลทั่วไป">ข้อเสนอแนะบริการ</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">วันที่ต้องการจอง *</label>
+                  <input type="date" id="bookDate" class="form-control">
+                  <span class="error-text" id="bookDateErr">กรุณาเลือกวันที่</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">ข้อความเพิ่มเติม *</label>
+                <textarea id="message" class="form-control" rows="3" placeholder="ระบุจำนวนท่าน หรือเมนูที่ต้องการสั่ง..."></textarea>
+                <span class="error-text" id="messageErr">กรุณากรอกข้อความ</span>
+              </div>
+              <button type="submit" class="btn-pop btn-primary" style="width: 100%;">📨 ยืนยันการส่งข้อมูล</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: Quick View -->
+  <div class="modal-bg" id="qvModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('qvModal')">✕</button>
+      <div style="height: 180px; border-radius: var(--radius-sm); border: var(--border-sm); overflow: hidden; margin-bottom: 12px;">
+        <img id="qvImg" src="" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <span class="badge badge-yellow" id="qvCat">หมวดหมู่</span>
+      <h2 id="qvName" style="margin: 6px 0;">ชื่อสินค้า</h2>
+      <p id="qvDesc" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">รายละเอียดสินค้า</p>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span class="price" id="qvPrice" style="font-size: 1.5rem;">0 ฿</span>
+        <button class="btn-pop btn-primary" id="qvAddBtn">🛒 สั่งซื้อทันที</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Success Popup -->
+  <div class="modal-bg" id="successModal">
+    <div class="modal-box" style="text-align: center;">
+      <button class="modal-close" onclick="closeModal('successModal')">✕</button>
+      <div style="font-size: 3rem; margin-bottom: 5px;">🎉</div>
+      <h2 style="color: var(--secondary);">ส่งข้อมูลสำเร็จเรียบร้อย!</h2>
+      <p style="color: var(--text-muted); margin: 10px 0 15px;">
+        ขอบคุณคุณ <strong id="resName">-</strong> ทางร้านได้รับข้อมูลการ <strong id="resTopic">-</strong> แล้ว จะรีบติดต่อกลับที่เบอร์ <strong id="resPhone">-</strong> ครับ
+      </p>
+      <button class="btn-pop btn-primary" onclick="closeModal('successModal')">ตกลง</button>
+    </div>
+  </div>
+
+  <!-- FOOTER (Flexbox) -->
+  <footer class="footer">
+    <div class="container">
+      <div class="logo" style="justify-content: center; margin-bottom: 10px;">
+        ☕ POP BREW <span>CAFE</span>
+      </div>
+      <div class="footer-links">
+        <a onclick="showPage('home')">หน้าแรก</a> •
+        <a onclick="showPage('products')">เมนู</a> •
+        <a onclick="showPage('promotions')">โปรโมชั่น</a> •
+        <a onclick="showPage('about')">เกี่ยวกับเรา</a> •
+        <a onclick="showPage('contact')">ติดต่อ</a>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">
+        © 2026 POP BREW CAFE | Mini Project Web Design & Development
+      </p>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC (7 ฟังก์ชันครบถ้วน) -->
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="ตะกร้าสินค้า">
+    <div class="cart-head"><span>🛒 ตะกร้าของคุณ</span><button class="modal-close" style="position:static;" onclick="closeCart()">✕</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot">
+      <div class="cart-total"><span>ยอดรวม</span><span id="cartSum">0 ฿</span></div>
+      <button class="btn-pop btn-primary" style="width:100%;" id="checkoutBtn" onclick="checkout()">✅ ยืนยันสั่งซื้อ</button>
+      <button class="btn-pop btn-white" style="width:100%; margin-top:8px;" onclick="clearCart()">🗑️ ล้างตะกร้า</button>
+    </div>
+  </aside>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let cartTotal = 0;
+
+    // 1. ระบบสลับหน้า (Page Switcher)
+    function showPage(pageId) {
+      document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+      const target = document.getElementById(`page-${pageId}`);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('onclick')?.includes(pageId)) link.classList.add('active');
+      });
+
+      document.getElementById('navLinks')?.classList.remove('open');
+      document.getElementById('hamburgerBtn')?.classList.remove('open');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 2. เมนูมือถือ Hamburger
+    const hamburger = document.getElementById('hamburgerBtn');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('open');
+        hamburger.classList.toggle('open', isOpen);
+      });
+    }
+
+    // 3. กรองหมวดหมู่สินค้า
+    function filterItems(category) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.querySelectorAll('.product-card').forEach(card => {
+        if (category === 'all' || card.getAttribute('data-cat') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // 4. Quick View Modal
+    document.querySelectorAll('.btn-qv').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('qvName').textContent = btn.dataset.title;
+        document.getElementById('qvCat').textContent = btn.dataset.cat;
+        document.getElementById('qvDesc').textContent = btn.dataset.desc;
+        document.getElementById('qvPrice').textContent = btn.dataset.price;
+        document.getElementById('qvImg').src = btn.dataset.img;
+        document.getElementById('qvAddBtn').onclick = () => {
+          addCart(btn.dataset.title);
+          closeModal('qvModal');
+        };
+        document.getElementById('qvModal').classList.add('active');
+      });
+    });
+
+    function closeModal(id) { document.getElementById(id)?.classList.remove('active'); }
+
+    // 5. Form Validation & Success Modal
+    const form = document.getElementById('contactForm');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let valid = true;
+        const name = document.getElementById('fullname');
+        const email = document.getElementById('email');
+        const phone = document.getElementById('phone');
+        const date = document.getElementById('bookDate');
+        const topic = document.getElementById('topic');
+        const msg = document.getElementById('message');
+
+        if (!name.value.trim() || name.value.trim().length < 3) { showErr(name, 'fullnameErr'); valid = false; } else { hideErr(name, 'fullnameErr'); }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email.value.trim() || !emailRegex.test(email.value.trim())) { showErr(email, 'emailErr'); valid = false; } else { hideErr(email, 'emailErr'); }
+        const phoneRegex = /^[0-9]{9,10}$/;
+        if (!phone.value.trim() || !phoneRegex.test(phone.value.replace(/[-\s]/g, ''))) { showErr(phone, 'phoneErr'); valid = false; } else { hideErr(phone, 'phoneErr'); }
+        if (!date.value) { showErr(date, 'bookDateErr'); valid = false; } else { hideErr(date, 'bookDateErr'); }
+        if (!msg.value.trim()) { showErr(msg, 'messageErr'); valid = false; } else { hideErr(msg, 'messageErr'); }
+
+        if (valid) {
+          document.getElementById('resName').textContent = name.value.trim();
+          document.getElementById('resTopic').textContent = topic.options[topic.selectedIndex].text;
+          document.getElementById('resPhone').textContent = phone.value.trim();
+          document.getElementById('successModal').classList.add('active');
+          form.reset();
+        }
+      });
+    }
+
+    function showErr(input, id) { input.classList.add('error'); document.getElementById(id)?.classList.add('show'); }
+    function hideErr(input, id) { input.classList.remove('error'); document.getElementById(id)?.classList.remove('show'); }
+
+    // 6. นับเวลาถอยหลังโปรโมชั่น (Countdown Timer)
+    function startTimer() {
+      const target = new Date();
+      target.setDate(target.getDate() + 5);
+      function update() {
+        const diff = target - new Date();
+        if (diff <= 0) return;
+        document.getElementById('dBox').textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+        document.getElementById('hBox').textContent = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+        document.getElementById('mBox').textContent = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
+        document.getElementById('sBox').textContent = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+      }
+      update();
+      setInterval(update, 1000);
+    }
+    startTimer();
+
+    // 7. ตะกร้าสินค้า
+    const PRICES = {
+      'Signature Vanilla Latte': 85, 'Craft Cold Brew': 95, 'Kyoto Uji Matcha': 90,
+      'Sparkling Peach Tea': 75, 'Basque Burnt Cheesecake': 110, 'French Butter Croissant': 65,
+      'Morning Starter Set': 120, 'Afternoon Sweet Set': 165, 'Work & Share Duo': 260
+    };
+    let cart = {};
+    try { cart = JSON.parse(localStorage.getItem('popbrew_cart') || '{}') || {}; } catch (e) { cart = {}; }
+    Object.keys(cart).forEach(k => { if (!(k in PRICES) || !(cart[k] > 0)) delete cart[k]; });
+
+    function saveCart() { try { localStorage.setItem('popbrew_cart', JSON.stringify(cart)); } catch (e) {} }
+    function cartCountNow() { return Object.values(cart).reduce((a, b) => a + b, 0); }
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 1800);
+    }
+    function addCart(name) {
+      if (!(name in PRICES)) return;
+      cart[name] = (cart[name] || 0) + 1;
+      saveCart(); renderCart();
+      const b = document.getElementById('cartBtn');
+      b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump');
+      toast('⚡ เพิ่ม "' + name + '" ลงตะกร้าแล้ว');
+    }
+    function changeQty(name, d) {
+      cart[name] = (cart[name] || 0) + d;
+      if (cart[name] <= 0) delete cart[name];
+      saveCart(); renderCart();
+    }
+    function removeItem(name) { delete cart[name]; saveCart(); renderCart(); }
+    function clearCart() { cart = {}; saveCart(); renderCart(); }
+    function openCart() {
+      renderCart();
+      document.getElementById('cartDrawer').classList.add('open');
+      document.getElementById('cartOverlay').classList.add('show');
+    }
+    function closeCart() {
+      document.getElementById('cartDrawer').classList.remove('open');
+      document.getElementById('cartOverlay').classList.remove('show');
+    }
+    function renderCart() {
+      const box = document.getElementById('cartItems');
+      box.innerHTML = '';
+      let sum = 0;
+      const names = Object.keys(cart);
+      document.getElementById('cartCount').textContent = cartCountNow();
+      if (!names.length) {
+        const e = document.createElement('div');
+        e.className = 'cart-empty';
+        e.textContent = '🛒 ยังไม่มีสินค้าในตะกร้า';
+        box.appendChild(e);
+      }
+      names.forEach(name => {
+        const q = cart[name], price = PRICES[name]; sum += q * price;
+        const row = document.createElement('div'); row.className = 'cart-row';
+        const info = document.createElement('div'); info.className = 'ci-info';
+        const n = document.createElement('div'); n.className = 'ci-name'; n.textContent = name;
+        const pr = document.createElement('div'); pr.className = 'ci-price'; pr.textContent = price + ' ฿ / ชิ้น';
+        info.append(n, pr);
+        const qty = document.createElement('div'); qty.className = 'qty';
+        const minus = document.createElement('button'); minus.type = 'button'; minus.textContent = '−'; minus.onclick = () => changeQty(name, -1);
+        const num = document.createElement('span'); num.textContent = q;
+        const plus = document.createElement('button'); plus.type = 'button'; plus.textContent = '+'; plus.onclick = () => changeQty(name, 1);
+        qty.append(minus, num, plus);
+        const tot = document.createElement('div'); tot.className = 'ci-sum'; tot.textContent = (q * price) + ' ฿';
+        const del = document.createElement('button'); del.type = 'button'; del.className = 'ci-del'; del.textContent = '🗑'; del.title = 'ลบ'; del.onclick = () => removeItem(name);
+        row.append(info, qty, tot, del);
+        box.appendChild(row);
+      });
+      document.getElementById('cartSum').textContent = sum + ' ฿';
+      document.getElementById('checkoutBtn').disabled = !names.length;
+    }
+    function checkout() {
+      if (!cartCountNow()) return;
+      const total = Object.keys(cart).reduce((a, k) => a + cart[k] * PRICES[k], 0);
+      const n = cartCountNow();
+      cart = {}; saveCart(); renderCart(); closeCart();
+      toast('🎉 สั่งซื้อสำเร็จ ' + n + ' ชิ้น รวม ' + total + ' ฿ ขอบคุณครับ!');
+    }
+    renderCart();
+  </script>
+</body>
+</html>
